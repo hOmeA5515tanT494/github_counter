@@ -59,8 +59,32 @@
       }
 
       .about {
+        position: relative;
+        z-index: 1;
         width: min(100%, 760px);
         text-align: center;
+      }
+
+      .food-decoration {
+        position: absolute;
+        z-index: 0;
+        width: clamp(100px, 20vmin, 220px);
+        height: auto;
+        filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35));
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .food-schnitzel {
+        bottom: calc(100% - 40px);
+        left: clamp(16px, 6vw, 60px);
+        transform: rotate(-12deg);
+      }
+
+      .food-currywurst {
+        top: calc(100% - 40px);
+        right: clamp(16px, 6vw, 60px);
+        transform: rotate(12deg);
       }
 
       h1 {
@@ -129,7 +153,17 @@
 
       @media (max-width: 540px) {
         main {
-          padding: 48px 24px;
+          padding: 160px 24px;
+        }
+
+        .food-schnitzel {
+          bottom: calc(100% + 18px);
+          left: 24px;
+        }
+
+        .food-currywurst {
+          top: calc(100% + 18px);
+          right: 24px;
         }
 
         h1 {
@@ -139,6 +173,13 @@
 
         .rule {
           margin: 28px auto;
+        }
+      }
+
+      @media (max-height: 540px) {
+        main {
+          padding-top: 160px;
+          padding-bottom: 160px;
         }
       }
 
@@ -153,6 +194,8 @@
     <canvas class="particle-burst" id="particle-burst" aria-hidden="true"></canvas>
     <main>
       <section class="about" aria-labelledby="heading">
+        <img class="food-decoration food-schnitzel" src="assets/schnitzel.png" width="1254" height="1254" alt="" aria-hidden="true" decoding="async" draggable="false" />
+        <img class="food-decoration food-currywurst" src="assets/currywurst.png" width="1254" height="1254" alt="" aria-hidden="true" decoding="async" draggable="false" />
         <h1 id="heading">About this page</h1>
         <p class="description">
           This page shows how much time we have left until our project deadline.
