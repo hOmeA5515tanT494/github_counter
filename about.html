@@ -182,7 +182,15 @@
           return;
         }
 
-        const DURATION = 8000;
+        const BURST_DURATION = 2000;
+        const origins = [
+          { x: 0.22, y: 0.24 },
+          { x: 0.78, y: 0.3 },
+          { x: 0.28, y: 0.74 },
+          { x: 0.76, y: 0.72 },
+          { x: 0.5, y: 0.18 },
+        ];
+        const TOTAL_DURATION = BURST_DURATION * origins.length;
         const width = window.innerWidth;
         const height = window.innerHeight;
         const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
@@ -191,17 +199,21 @@
         context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
         const count = Math.min(160, Math.max(80, Math.round(width / 8)));
-        const reach = Math.hypot(width, height) * 0.55;
-        const particles = Array.from({ length: count }, (_, index) => {
-          const angle = (index / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.2;
-          const distance = reach * (0.3 + Math.random() * 0.7);
-          return {
-            x: Math.cos(angle) * distance,
-            y: Math.sin(angle) * distance,
-            radius: 1 + Math.random() * 2.5,
-            brightness: 0.4 + Math.random() * 0.6,
-          };
-        });
+        const reach = Math.min(width, height) * 0.48;
+        const bursts = origins.map((origin) => ({
+          x: origin.x * width,
+          y: origin.y * height,
+          particles: Array.from({ length: count }, (_, index) => {
+            const angle = (index / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.2;
+            const distance = reach * (0.3 + Math.random() * 0.7);
+            return {
+              x: Math.cos(angle) * distance,
+              y: Math.sin(angle) * distance,
+              radius: 1 + Math.random() * 2.5,
+              brightness: 0.4 + Math.random() * 0.6,
+            };
+          }),
+        }));
 
         const startedAt = performance.now();
         let frame;
@@ -213,25 +225,27 @@
           canvas.remove();
         }
 
-        // Remove the effect after the eight-second burst and stop scheduling frames.
-        const cleanupTimer = window.setTimeout(cleanup, DURATION);
+        // Play five two-second bursts, then remove the effect after ten seconds.
+        const cleanupTimer = window.setTimeout(cleanup, TOTAL_DURATION);
         window.addEventListener("pagehide", cleanup, { once: true });
 
         function draw(now) {
-          const progress = Math.min((now - startedAt) / DURATION, 1);
-          if (progress >= 1) {
+          const elapsed = Math.max(0, now - startedAt);
+          if (elapsed >= TOTAL_DURATION) {
             cleanup();
             return;
           }
 
+          const burst = bursts[Math.floor(elapsed / BURST_DURATION)];
+          const progress = (elapsed % BURST_DURATION) / BURST_DURATION;
           context.clearRect(0, 0, width, height);
           context.fillStyle = "#f0f6fc";
           const travel = 1 - Math.pow(1 - progress, 3);
           const fade = Math.pow(1 - progress, 1.4);
 
-          for (const particle of particles) {
-            const x = width / 2 + particle.x * travel;
-            const y = height / 2 + particle.y * travel + 45 * progress * progress;
+          for (const particle of burst.particles) {
+            const x = burst.x + particle.x * travel;
+            const y = burst.y + particle.y * travel + 45 * progress * progress;
             context.globalAlpha = fade * particle.brightness;
             context.beginPath();
             context.arc(x, y, particle.radius * (1 - progress * 0.6), 0, Math.PI * 2);
