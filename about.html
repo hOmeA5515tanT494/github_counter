@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d1117" />
+    <meta
+      name="description"
+      content="A simple countdown showing how much time remains until our project deadline."
+    />
+    <title>About — Project deadline</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --background: #0d1117;
+        --foreground: #f0f6fc;
+        --muted: #919ba7;
+        --border: rgba(240, 246, 252, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        background: var(--background);
+        color: var(--foreground);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(240, 246, 252, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(240, 246, 252, 0.025) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: radial-gradient(ellipse at center, black, transparent 75%);
+      }
+
+      main {
+        position: relative;
+        display: grid;
+        place-items: center;
+        padding: 64px 24px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(240, 246, 252, 0.035),
+          transparent 65%
+        );
+      }
+
+      .about {
+        width: min(100%, 760px);
+        text-align: center;
+      }
+
+      h1 {
+        display: inline-block;
+        margin: 0 0 32px;
+        padding: 10px 16px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: #c9d1d9;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .description {
+        margin: 0;
+        font-size: clamp(28px, 4.5vw, 46px);
+        font-weight: 400;
+        letter-spacing: -0.035em;
+        line-height: 1.45;
+        text-wrap: balance;
+      }
+
+      .rule {
+        width: 48px;
+        height: 1px;
+        margin: 36px auto;
+        background: #444c56;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 12px 20px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--foreground);
+        font-size: 13px;
+        line-height: 1.5;
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        border-color: var(--muted);
+        background: rgba(240, 246, 252, 0.05);
+      }
+
+      .back-link:focus-visible {
+        outline: 2px solid var(--foreground);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 540px) {
+        main {
+          padding: 48px 24px;
+        }
+
+        h1 {
+          margin-bottom: 24px;
+          font-size: 10px;
+        }
+
+        .rule {
+          margin: 28px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="about" aria-labelledby="heading">
+        <h1 id="heading">About this page</h1>
+        <p class="description">
+          This page shows how much time we have left until our project deadline.
+        </p>
+        <div class="rule" aria-hidden="true"></div>
+        <a class="back-link" href="index.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="m12 5-7 7 7 7M5 12h14" />
+          </svg>
+          Back to countdown
+        </a>
+      </section>
+    </main>
+  </body>
+</html>
